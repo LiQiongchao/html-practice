@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>detail</title>
+</head>
+<body>
+    <div id="detail"></div>
+
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../js/remind.js"></script>
+    <script>
+        var key = amGloble.GetQueryString('key');  // 获取地址栏参数
+        amGloble.Updata(key);    // 更新查看数据
+
+        var text = amGloble.GetQueryString('text');
+        $('#detail').text(text);
+    </script>
+</body>
+</html>
