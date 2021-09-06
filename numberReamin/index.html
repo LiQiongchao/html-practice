@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div data-newinfo="020505">hello</div>
+<div data-newinfo="020502">joy</div>
+<div data-newinfo="020506">bob</div>
+<div data-newinfo="03">lucy</div>
+
+</body>
+
+<script type="text/javascript">
+
+    /*
+使用说明：
+
+data:数据
+setInfo():将消息提示添加到页面中
+
+new NewInfo(data).setInfo();
+------------------------------------
+<div data-newinfo="020505"></div>
+var data = [
+	{
+		key:"020506",
+		num:5
+	},
+	{
+		key:"03",
+		num:2
+	}
+];
+*/
+    function NewInfo(data) {
+        this.data = data;
+        // 获取所有需要添加新消息提示的元素
+        this.newinfoDoms = Array.prototype.slice.call(document.querySelectorAll("[data-newinfo]"));
+        // 样式
+        this.sty = "padding: 2px 5px;background-color: red;border-radius: 100%;color: #fff;font-size: 12px;vertical-align: 4px;line-height:1;";
+    }
+
+    NewInfo.prototype = {
+        // 获取所需的信息
+        getInfo: function () {
+            var _this = this;
+            var arr = [];
+            this.newinfoDoms.forEach(function (item, index) {
+                var isTrue = true;
+                _this.data.forEach(function (item2, index) {
+                    var isNewInfo = item2.key.substring(0, item.dataset.newinfo.length) === item.dataset.newinfo;
+                    console.log(isNewInfo)
+                    if (isNewInfo && item.dataset.newinfo) {
+                        if (isTrue) {
+                            arr.push({
+                                'item': item,
+                                'num': item2.num
+                            });
+                        } else {
+                            arr[arr.length - 1].num += item2.num;
+                        }
+                        isTrue = false;
+                    }
+                });
+            });
+            return arr;
+        },
+        // 添加到相应的页面中
+        setInfo: function () {
+            var _this = this;
+            var arr = this.getInfo();
+            arr.forEach(function (current, index) {
+                var newinfo = document.createElement('newinfo');
+                newinfo.style.cssText = _this.sty;
+                if (current.num > 0) {
+                    newinfo.innerHTML = current.num;
+                } else {
+                    newinfo.style.paddingTop = '0';
+                    newinfo.style.paddingBottom = '0';
+                }
+                current.item.appendChild(newinfo);
+            })
+        }
+    };
+
+
+    var data = [
+        {
+            key: "020506",
+            num: 4
+        },
+        {
+            key: "03",
+            num: 3
+        }
+    ];
+
+    // var info = new NewInfo(data);
+    // info.setInfo();
+    new NewInfo(data).setInfo();
+
+</script>
+
+</html>
